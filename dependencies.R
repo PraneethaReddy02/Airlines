@@ -9,5 +9,5 @@ for (pkg in required_packages) {
   }
 }
 
-# Load the required libraries
+# Load the packages
 invisible(lapply(required_packages, library, character.only = TRUE))
