@@ -8,22 +8,22 @@ library(wordcloud)
 library(RColorBrewer)
 
 shinyServer(function(input, output, session) {
-  
-  # Read the uploaded CSV file
+
+  # Reactive function for reading the uploaded CSV file
   dataInput <- reactive({
     req(input$file)
     tryCatch({
       read.csv(input$file$datapath, stringsAsFactors = FALSE)
     }, error = function(e) {
-      return(NULL)
+      NULL
     })
   })
   
-  # Process the uploaded file
+  # Process the uploaded data
   tweets <- reactive({
     df <- dataInput()
     req(df)
-    # Ensure the CSV contains required columns
+    # Ensure the CSV file has columns 'airline' and 'text'
     if (!all(c("airline", "text") %in% names(df))) {
       stop("CSV must contain 'airline' and 'text' columns")
     }
@@ -74,7 +74,7 @@ shinyServer(function(input, output, session) {
                       selected = "All")
   })
   
-  # Reactive subset based on the selected airline
+  # Reactive subset based on selected airline
   filtered_data <- reactive({
     req(processed_tweets())
     if (input$selected_airline == "All") {
